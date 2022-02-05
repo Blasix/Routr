@@ -3,6 +3,7 @@
 // flutter create --project-name NAME APP --org net.blasix APP FOLDER NAME
 //
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:routr/screens/authentication/login.dart';
@@ -27,9 +28,35 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Routr',
       theme: ThemeData(
+        brightness: Brightness.light,
         primarySwatch: Colors.blue,
+        /* light theme settings */
       ),
-      home: const HomeScreen(),
+      darkTheme: ThemeData(
+          colorScheme: ColorScheme.fromSwatch(
+        primarySwatch: Colors.blue,
+        brightness: Brightness.dark,
+      ).copyWith(secondary: Colors.blue)
+          /* dark theme settings */
+          ),
+      themeMode: ThemeMode.dark,
+      /* ThemeMode.system to follow system theme, 
+         ThemeMode.light for light theme, 
+         ThemeMode.dark for dark theme
+      */
+      debugShowCheckedModeBanner: false,
+      home: const LoginScreen(),
     );
   }
+
+  // Widget Test() {
+  //   FirebaseAuth.instance.authStateChanges().listen((User? user) {
+  //     if (user == null) {
+  //       HomeScreen();
+  //     } else {
+  //       LoginScreen();
+  //     }
+  //     return;
+  //   });
+  // }
 }

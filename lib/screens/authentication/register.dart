@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:routr/models/user_model.dart';
 
 import '../home.dart';
 
@@ -97,7 +100,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           return null;
         },
         onSaved: (value) {
-          firstNameEditingController.text = value!;
+          emailEditingController.text = value!;
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -124,7 +127,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           }
         },
         onSaved: (value) {
-          firstNameEditingController.text = value!;
+          passwordEditingController.text = value!;
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -170,7 +173,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           minWidth: MediaQuery.of(context).size.width,
           onPressed: () {
-            // signUp(emailEditingController.text, passwordEditingController.text);
+            signUp(emailEditingController.text, passwordEditingController.text);
           },
           child: const Text(
             "SignUp",
@@ -181,7 +184,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -195,37 +197,34 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       ),
       body: Center(
         child: SingleChildScrollView(
-          child: Container(
-            color: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.all(36.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                        height: 100,
-                        child: Image.asset(
-                          "assets/LogoA2.png",
-                          fit: BoxFit.contain,
-                        )),
-                    const SizedBox(height: 45),
-                    firstNameField,
-                    const SizedBox(height: 20),
-                    secondNameField,
-                    const SizedBox(height: 20),
-                    emailField,
-                    const SizedBox(height: 20),
-                    passwordField,
-                    const SizedBox(height: 20),
-                    confirmPasswordField,
-                    const SizedBox(height: 20),
-                    signUpButton,
-                    const SizedBox(height: 15),
-                  ],
-                ),
+          child: Padding(
+            padding: const EdgeInsets.all(36.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                      height: 100,
+                      child: Image.asset(
+                        "assets/Earth_alternitive.png",
+                        fit: BoxFit.contain,
+                      )),
+                  const SizedBox(height: 45),
+                  firstNameField,
+                  const SizedBox(height: 20),
+                  secondNameField,
+                  const SizedBox(height: 20),
+                  emailField,
+                  const SizedBox(height: 20),
+                  passwordField,
+                  const SizedBox(height: 20),
+                  confirmPasswordField,
+                  const SizedBox(height: 20),
+                  signUpButton,
+                  const SizedBox(height: 15),
+                ],
               ),
             ),
           ),
@@ -233,68 +232,72 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       ),
     );
   }
-  // void signUp(String email, String password) async {
-  //   if (_formKey.currentState!.validate()) {
-  //     try {
-  //       await _auth
-  //           .createUserWithEmailAndPassword(email: email, password: password)
-  //           .then((value) => {postDetailsToFirestore()})
-  //           .catchError((e) {
-  //         Fluttertoast.showToast(msg: e!.message);
-  //       });
-  //     } on FirebaseAuthException catch (error) {
-  //       switch (error.code) {
-  //         case "invalid-email":
-  //           errorMessage = "Your email address appears to be malformed.";
-  //           break;
-  //         case "wrong-password":
-  //           errorMessage = "Your password is wrong.";
-  //           break;
-  //         case "user-not-found":
-  //           errorMessage = "User with this email doesn't exist.";
-  //           break;
-  //         case "user-disabled":
-  //           errorMessage = "User with this email has been disabled.";
-  //           break;
-  //         case "too-many-requests":
-  //           errorMessage = "Too many requests";
-  //           break;
-  //         case "operation-not-allowed":
-  //           errorMessage = "Signing in with Email and Password is not enabled.";
-  //           break;
-  //         default:
-  //           errorMessage = "An undefined Error happened.";
-  //       }
-  //       Fluttertoast.showToast(msg: errorMessage!);
-  //       print(error.code);
-  //     }
-  //   }
-  // }
-  // postDetailsToFirestore() async {
-  //   // calling our firestore
-  //   // calling our user model
-  //   // sedning these values
 
-  //   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  //   User? user = _auth.currentUser;
+  void signUp(String email, String password) async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        await _auth
+            .createUserWithEmailAndPassword(email: email, password: password)
+            .then((value) => {postDetailsToFirestore()})
+            .catchError((e) {
+          Fluttertoast.showToast(msg: e!.message);
+        });
+      } on FirebaseAuthException catch (error) {
+        switch (error.code) {
+          case "invalid-email":
+            errorMessage = "Your email address appears to be malformed.";
+            break;
+          case "wrong-password":
+            errorMessage = "Your password is wrong.";
+            break;
+          case "user-not-found":
+            errorMessage = "User with this email doesn't exist.";
+            break;
+          case "user-disabled":
+            errorMessage = "User with this email has been disabled.";
+            break;
+          case "too-many-requests":
+            errorMessage = "Too many requests";
+            break;
+          case "operation-not-allowed":
+            errorMessage = "Signing in with Email and Password is not enabled.";
+            break;
+          default:
+            errorMessage = "An undefined Error happened.";
+        }
+        Fluttertoast.showToast(msg: errorMessage!);
+        if (kDebugMode) {
+          print(error.code);
+        }
+      }
+    }
+  }
 
-  //   UserModel userModel = UserModel();
+  postDetailsToFirestore() async {
+    // calling our firestore
+    // calling our user model
+    // sedning these values
 
-  //   // writing all the values
-  //   userModel.email = user!.email;
-  //   userModel.uid = user.uid;
-  //   userModel.firstName = firstNameEditingController.text;
-  //   userModel.secondName = secondNameEditingController.text;
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    User? user = _auth.currentUser;
 
-  //   await firebaseFirestore
-  //       .collection("users")
-  //       .doc(user.uid)
-  //       .set(userModel.toMap());
-  //   Fluttertoast.showToast(msg: "Account created successfully :) ");
+    UserModel userModel = UserModel();
 
-  //   Navigator.pushAndRemoveUntil(
-  //       (context),
-  //       MaterialPageRoute(builder: (context) => HomeScreen()),
-  //       (route) => false);
-  // }
+    // writing all the values
+    userModel.email = user!.email;
+    userModel.uid = user.uid;
+    userModel.firstName = firstNameEditingController.text;
+    userModel.secondName = secondNameEditingController.text;
+
+    await firebaseFirestore
+        .collection("users")
+        .doc(user.uid)
+        .set(userModel.toMap());
+    Fluttertoast.showToast(msg: "Account created successfully");
+
+    Navigator.pushAndRemoveUntil(
+        (context),
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+        (route) => false);
+  }
 }
