@@ -74,6 +74,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 leading: const Icon(Icons.collections_bookmark)),
           ],
         ),
+        SettingsSection(
+          title: 'Social',
+          tiles: [
+            SettingsTile(
+                title: 'Discord', leading: const Icon(Icons.sms_outlined)),
+            SettingsTile(
+                title: 'Twitter', leading: const Icon(Icons.sms_outlined)),
+          ],
+        ),
         CustomSection(
           child: Column(
             children: [

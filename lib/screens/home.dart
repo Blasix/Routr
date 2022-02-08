@@ -16,25 +16,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // banner add
+  // // banner add
 
-  BannerAd banner;
+  // late BannerAd banner;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final adState = Provider.of<AdState>(context);
-    adState.initialization.then((status) {
-      setState(() {
-        banner = BannerAd(
-          size: AdSize.banner,
-          adUnitId: adState.bannerAdUnitID,
-          listener: const BannerAdListener(),
-          request: const AdRequest(),
-        )..load();
-      });
-    });
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   final adState = Provider.of<AdState>(context);
+  //   adState.initialization.then((status) {
+  //     setState(() {
+  //       banner = BannerAd(
+  //         size: AdSize.banner,
+  //         adUnitId: adState.bannerAdUnitID,
+  //         listener: const BannerAdListener(),
+  //         request: const AdRequest(),
+  //       )..load();
+  //     });
+  //   });
+  // }
 
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
@@ -102,10 +102,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              Container(
-                height: 50,
-                child: AdWidget(ad: banner),
-              )
+              // Container(
+              //   height: 50,
+              //   child: AdWidget(ad: banner),
+              // )
             ],
           ),
         ),
