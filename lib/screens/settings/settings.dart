@@ -1,5 +1,8 @@
 // source https://github.com/juliansteenbakker/flutter_settings_ui
-// https://pub.dev/packages/flutter_settings_screens
+//
+//
+// maby change to: https://pub.dev/packages/flutter_settings_screens
+// https://www.youtube.com/watch?v=pYQAhrY_SQA
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,13 +20,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(centerTitle: true, title: const Text('Settings')),
       body: buildSettingsList(),
     );
   }
 
   Widget buildSettingsList() {
     return SettingsList(
+      darkBackgroundColor: ThemeData.dark().scaffoldBackgroundColor,
       sections: [
         CustomSection(
           child: const Padding(
@@ -31,6 +35,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
               top: 15,
             ),
           ),
+        ),
+        SettingsSection(
+          title: 'General',
+          tiles: [
+            SettingsTile
+                // .switchTile
+                (
+              title: 'Dark Mode',
+              leading: const Icon(Icons.nightlight_rounded),
+              onPressed: (context) {},
+            ),
+          ],
         ),
         SettingsSection(
           title: 'Account',
