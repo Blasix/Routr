@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:provider/provider.dart';
 import 'package:routr/models/user_model.dart';
 import 'package:routr/screens/settings/settings.dart';
 
@@ -22,11 +22,12 @@ class _HomeScreenState extends State<HomeScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
 
+  //create ad
   @override
   void initState() {
     _bannerAd = BannerAd(
       adUnitId: AdHelper.bannerAdUnitId,
-      request: AdRequest(),
+      request: const AdRequest(),
       size: AdSize.banner,
       listener: BannerAdListener(
         onAdLoaded: (_) {
@@ -35,7 +36,9 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         },
         onAdFailedToLoad: (ad, err) {
-          print('Failed to load a banner ad: ${err.message}');
+          if (kDebugMode) {
+            print('Failed to load a banner ad: ${err.message}');
+          }
           _isBannerAdReady = false;
           ad.dispose();
         },
@@ -44,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     _bannerAd.load();
 
+    //load Firestore
     super.initState();
     FirebaseFirestore.instance
         .collection("users")
@@ -66,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Routr"),
-        actions: <Widget>[
+        actions: [
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
@@ -84,6 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               Expanded(
+                //TODO: Replace content with a map
                 //hier kan SHIT
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -111,6 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
+              //display Ad
               if (_isBannerAdReady)
                 Align(
                   alignment: Alignment.bottomCenter,
