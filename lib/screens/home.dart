@@ -16,31 +16,34 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // // banner add
-
-  // late BannerAd banner;
-
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   final adState = Provider.of<AdState>(context);
-  //   adState.initialization.then((status) {
-  //     setState(() {
-  //       banner = BannerAd(
-  //         size: AdSize.banner,
-  //         adUnitId: adState.bannerAdUnitID,
-  //         listener: const BannerAdListener(),
-  //         request: const AdRequest(),
-  //       )..load();
-  //     });
-  //   });
-  // }
+  late BannerAd _bannerAd;
+  bool _isBannerAdReady = false;
 
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
 
   @override
   void initState() {
+    _bannerAd = BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isBannerAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          print('Failed to load a banner ad: ${err.message}');
+          _isBannerAdReady = false;
+          ad.dispose();
+        },
+      ),
+    );
+
+    _bannerAd.load();
+
     super.initState();
     FirebaseFirestore.instance
         .collection("users")
@@ -50,6 +53,12 @@ class _HomeScreenState extends State<HomeScreen> {
       loggedInUser = UserModel.fromMap(value.data());
       setState(() {});
     });
+  }
+
+  @override
+  void dispose() {
+    _bannerAd.dispose();
+    super.dispose();
   }
 
   @override
@@ -102,10 +111,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              // Container(
-              //   height: 50,
-              //   child: AdWidget(ad: banner),
-              // )
+              if (_isBannerAdReady)
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    width: _bannerAd.size.width.toDouble(),
+                    height: _bannerAd.size.height.toDouble(),
+                    child: AdWidget(ad: _bannerAd),
+                  ),
+                ),
             ],
           ),
         ),

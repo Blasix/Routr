@@ -20,11 +20,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   final initFuture = MobileAds.instance.initialize();
-  final adState = AdState(initFuture);
-  runApp(Provider.value(
-    value: adState,
-    builder: (context, child) => const MyApp(),
-  ));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
