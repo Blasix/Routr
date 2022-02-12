@@ -1,7 +1,10 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:routr/models/user_model.dart';
 import 'package:routr/screens/settings/settings.dart';
@@ -16,6 +19,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final Completer<GoogleMapController> _controller = Completer();
+
   late BannerAd _bannerAd;
   bool _isBannerAdReady = false;
 
@@ -83,51 +88,31 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Expanded(
-                //TODO: Replace content with a map
-                //hier kan SHIT
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                        height: 120,
-                        child: Image.asset(
-                          "assets/Earth_alternitive.png",
-                          fit: BoxFit.contain,
-                        )),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Home',
-                      style:
-                          TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 10),
-                    Text("${loggedInUser.firstName} ${loggedInUser.secondName}",
-                        style: const TextStyle(
-                            color: Colors.grey, fontWeight: FontWeight.w500)),
-                    Text("${loggedInUser.email}",
-                        style: const TextStyle(
-                            color: Colors.grey, fontWeight: FontWeight.w500)),
-                  ],
+        child: Column(
+          children: [
+            Expanded(
+              child: GoogleMap(
+                mapType: MapType.normal,
+                initialCameraPosition: const CameraPosition(
+                  target: LatLng(37.42796133580664, -122.085749655962),
+                  zoom: 14.4746,
+                ),
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+              ),
+            ),
+            //display Ad
+            if (_isBannerAdReady)
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: SizedBox(
+                  width: _bannerAd.size.width.toDouble(),
+                  height: _bannerAd.size.height.toDouble(),
+                  child: AdWidget(ad: _bannerAd),
                 ),
               ),
-              //display Ad
-              if (_isBannerAdReady)
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    width: _bannerAd.size.width.toDouble(),
-                    height: _bannerAd.size.height.toDouble(),
-                    child: AdWidget(ad: _bannerAd),
-                  ),
-                ),
-            ],
-          ),
+          ],
         ),
       ),
     );
