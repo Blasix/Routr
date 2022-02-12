@@ -7,8 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:provider/provider.dart';
-import 'package:routr/ad_state.dart';
 import 'package:routr/screens/authentication/login.dart';
 import 'package:routr/screens/home.dart';
 import 'firebase_options.dart';
@@ -16,11 +14,11 @@ import 'firebase_options.dart';
 void main() async {
   //initialze firebase
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  final initFuture = MobileAds.instance.initialize();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

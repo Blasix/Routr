@@ -64,6 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
         autofocus: false,
         controller: passwordController,
         obscureText: true,
+        // ignore: body_might_complete_normally_nullable
         validator: (value) {
           RegExp regex = RegExp(r'^.{6,}$');
           if (value!.isEmpty) {

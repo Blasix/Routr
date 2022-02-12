@@ -117,6 +117,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         autofocus: false,
         controller: passwordEditingController,
         obscureText: true,
+        // ignore: body_might_complete_normally_nullable
         validator: (value) {
           RegExp regex = RegExp(r'^.{6,}$');
           if (value!.isEmpty) {
