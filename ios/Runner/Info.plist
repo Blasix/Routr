@@ -45,5 +45,7 @@
 	<true/>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-1885557411171609~3677744452</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Routr needs access to location when open.</string>
 </dict>
 </plist>

@@ -394,6 +394,8 @@ PODS:
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
+  - geolocator_apple (1.2.0):
+    - Flutter
   - Google-Mobile-Ads-SDK (8.11.0):
     - GoogleAppMeasurement (< 9.0, >= 7.0)
     - GoogleUserMessagingPlatform (>= 1.1)
@@ -492,6 +494,7 @@ DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
+  - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - Google-Mobile-Ads-SDK
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - google_mobile_ads (from `.symlinks/plugins/google_mobile_ads/ios`)
@@ -531,6 +534,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
+  geolocator_apple:
+    :path: ".symlinks/plugins/geolocator_apple/ios"
   google_maps_flutter:
     :path: ".symlinks/plugins/google_maps_flutter/ios"
   google_mobile_ads:
@@ -551,6 +556,7 @@ SPEC CHECKSUMS:
   FirebaseFirestore: 3b2e4b532c68809b3df5f8d39d28b3398ffc196b
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
+  geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
   Google-Mobile-Ads-SDK: be2192b51b74d74a6ed70590c2e8275412f1b71e
   google_maps_flutter: abdb8dee6c52d4be36ad131ee6ebfacd14417c5a
   google_mobile_ads: a2f8b901601401bf7e691b4224d5992e9a37599a
